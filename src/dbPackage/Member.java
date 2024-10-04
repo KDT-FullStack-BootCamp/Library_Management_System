@@ -30,11 +30,13 @@ public class Member {
 		String phone;
 
 		// ====회원가입====
-		System.out.println("=====회원가입=====");
+		System.out.println("\n=======================================");
+		System.out.println("\n           ★ 티니핑 대도서관 ★         \n");
+		System.out.println("=======================================\n");
 
 		// ID 입력 및 유효성 검사
 		while (true) {
-			System.out.print("ID 를 입력하세요 (영문 소문자, 숫자 포함 5~10글자): ");
+			System.out.print("\nID 를 입력하세요 (영문 소문자, 숫자 포함 5~10글자): ");
 			id = scanner.nextLine();
 
 			// ID 유효성 검사 (정규식)
@@ -44,7 +46,7 @@ public class Member {
 			}
 			// DB에서 ID 중복 확인
 			if (isDuplicateID(id, conn)) { // isDuplicate 라는 내부 메서드 실행
-				System.out.println("중복된 ID 입니다. 다시 입력해주세요.");
+				System.out.println("중복된 ID 입니다. 다시 입력해주세요.\n");
 				continue;
 			}
 
@@ -53,7 +55,7 @@ public class Member {
 
 		// 비밀번호 입력 및 유효성 검사
 		while (true) {
-			System.out.print("비밀번호 (길이 8 이상, 숫자 포함): ");
+			System.out.print("\n비밀번호 (길이 8 이상, 숫자 포함): ");
 			pw = scanner.nextLine();
 
 			// 비밀번호 강도 검사 (길이 8 이상, 숫자 포함)
@@ -75,12 +77,12 @@ public class Member {
 		}
 
 		// 이름 입력
-		System.out.print("이름을 입력하세요: ");
+		System.out.print("\n이름을 입력하세요: ");
 		name = scanner.nextLine();
 
 		// 전화번호 입력 및 유효성 검사
 		while (true) {
-			System.out.print("전화번호를 입력하세요 (숫자 11자리): ");
+			System.out.print("\n전화번호를 입력하세요 (숫자 11자리): ");
 			phone = scanner.nextLine();
 
 			// 전화번호가 11자리 숫자인지 확인
@@ -100,7 +102,8 @@ public class Member {
 			insertStmt.setString(3, pw);
 			insertStmt.setString(4, phone);
 			insertStmt.executeUpdate();
-			System.out.println("회원가입이 완료되었습니다.");
+			Menu.ConsoleUtil.clearConsole();
+			System.out.println("\n회원가입이 완료되었습니다.\n");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

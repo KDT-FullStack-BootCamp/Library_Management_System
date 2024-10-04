@@ -26,6 +26,7 @@ public class Book {
 		this.category = category; // 도서 카테고리 초기화
 		this.quantity = quantity; // 도서 수량 초기화
 		this.isRented = isRented; // 대여 여부 초기화
+
 	}
 
 	// Getter 메서드: 각 속성 값을 반환하는 메서드들
@@ -60,15 +61,21 @@ public class Book {
 	public boolean isRented() {
 		return isRented; // 대여 여부 반환
 	}
-
+	
 	 // 도서 검색 메서드 (필터 추가 및 결과 처리 개선)
     public static void searchBook(Connection conn) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
         while (choice < 1 || choice > 3) {
-            System.out.println("검색 기준을 선택하세요: 1. 도서명 2. 저자 3. 카테고리");
-            System.out.print("선택: ");
+			System.out.println("\n=======================================");
+			System.out.println("\n	- 검색 기준을 선택해주세요. -\n");
+			System.out.println("=======================================\n");
+			System.out.println("	  1. 도서명(Book Name)");
+			System.out.println("	  2. 저자(Author)");
+			System.out.println("	  3. 카테고리(Category)\n");
+			System.out.println("=======================================");
+            System.out.print("\n숫자를 입력해주세요: ");
             if (scanner.hasNextInt()) {
                 choice = scanner.nextInt();
                 scanner.nextLine();  // 개행 문자 처리
@@ -79,6 +86,7 @@ public class Book {
                 System.out.println("숫자를 입력하세요.");
                 scanner.next();  // 잘못된 입력을 비워냄
             }
+            Menu.ConsoleUtil.clearConsole();
         }
 
         String query = "SELECT * FROM booktbl WHERE ";
@@ -87,18 +95,34 @@ public class Book {
 
         switch (choice) {
             case 1:
-                System.out.print("도서명: ");
+    			System.out.println("\n=======================================");
+    			System.out.println("\n	- 도서명을 입력해주세요. -\n");
+    			System.out.println("=======================================\n");
+    			System.out.println("예시) 싹싹핑");
+                System.out.print("책 제목을 입력해주세요: ");
                 searchValue = scanner.nextLine();
+                System.out.println("");
+                Menu.ConsoleUtil.clearConsole();
                 filter = "bookName LIKE ?";
                 break;
             case 2:
-                System.out.print("저자: ");
+    			System.out.println("\n=======================================");
+    			System.out.println("\n	- 저자를 입력해주세요. -\n");
+    			System.out.println("=======================================\n");
+    			System.out.println("예시) 존 그린");
+            	System.out.print("저자를 입력해주세요: ");
                 searchValue = scanner.nextLine();
+                Menu.ConsoleUtil.clearConsole();
                 filter = "author LIKE ?";
                 break;
             case 3:
-                System.out.print("카테고리: ");
+    			System.out.println("\n=======================================");
+    			System.out.println("\n	- 카테고리를 입력해주세요. -\n");
+    			System.out.println("=======================================\n");
+    			System.out.println("예시) 일반");
+                System.out.print("카테고리를 입력해주세요: ");
                 searchValue = scanner.nextLine();
+                Menu.ConsoleUtil.clearConsole();
                 filter = "category LIKE ?";
                 break;
         }
@@ -159,7 +183,11 @@ public class Book {
             }
 
             // 2. 대여할 책 제목 입력
-            System.out.println("대여할 책 제목을 입력해주세요: ");
+	        System.out.println("\n=======================================");
+	        System.out.println("\n      - 대여할 책 제목을 입력해주세요. -\n");
+	        System.out.println("=======================================\n");
+	        System.out.println("예시) 싹싹핑");
+            System.out.print("책 제목을 입력해주세요: ");
             String bookTitle = scanner.nextLine(); // 책 제목을 문자열로 입력받기
 
             String query = "SELECT * FROM booktbl WHERE bookName LIKE ?";
@@ -182,6 +210,7 @@ public class Book {
                 int quantity = rs.getInt("quantity");
 
                 // 도서 정보를 출력
+                System.out.println("");
                 System.out.println("도서 ID: " + bookId + ", 제목: " + bookName + ", 저자: " + authorName + ", 출판사: "
                         + publisher + ", 카테고리: " + categoryName + ", 수량: " + quantity);
 
@@ -202,7 +231,7 @@ public class Book {
                     return;
                 }
 
-                System.out.println("해당 도서를 대여 하시겠습니까?: Y / N");
+                System.out.print("해당 도서를 대여 하시겠습니까? (Y / N): ");
                 String select = scanner.nextLine();
 
                 if (!select.equalsIgnoreCase("Y")) {
@@ -265,7 +294,7 @@ public class Book {
 	// 도서를 반납하는 메서드
 	public static void returnBook(Member member, Connection conn) throws SQLException {
 	    Scanner scanner = new Scanner(System.in);
-	    System.out.println("반납할 책 제목을 입력해주세요: ");
+	    System.out.print("\n반납할 책 제목을 입력해주세요: ");
 	    String bookTitle = scanner.nextLine();
 
 	    try {
@@ -287,7 +316,7 @@ public class Book {
 	        int quantity = rs.getInt("quantity");
 
 	        // 2. 반납 여부 확인
-	        System.out.println("해당 도서를 반납하시겠습니까? : Y / N");
+	        System.out.print("해당 도서를 반납하시겠습니까? (Y / N): ");
 	        String userInput = scanner.nextLine();
 
 	        if (userInput.equalsIgnoreCase("Y")) {
@@ -311,10 +340,10 @@ public class Book {
 	            int bookupdateRows = updateBookStmt.executeUpdate();
 
 	            if (bookupdateRows > 0) {
-	                System.out.println("도서 반납이 완료되었습니다.");
+	                System.out.println("\n도서 반납이 완료되었습니다.");
 	                conn.commit(); // 성공 시 커밋
 	            } else {
-	                System.out.println("도서 반납에 실패하였습니다.");
+	                System.out.println("\\n도서 반납에 실패하였습니다.");
 	                conn.rollback(); // 실패 시 롤백
 	            }
 
