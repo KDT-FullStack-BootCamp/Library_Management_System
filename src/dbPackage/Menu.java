@@ -21,8 +21,18 @@ public class Menu {
 		}
 	}
 
+	public class ConsoleUtil {
+
+	    // 콘솔을 초기화하는 메소드 (빈 줄 50개 출력)
+	    public static void clearConsole() {
+	        for (int i = 0; i < 70; i++) {
+	            System.out.println();
+	        }
+	    }
+	}
+	
 	public void JoinTitle() {
-		System.out.println("- 티니핑 라이브러리 -");
+		System.out.println("================================ 티니핑 대도서관 ================================");
 		System.out.println("");
 		System.out.println("	   ／＞　 フ		 .---. .-..-. .-..-..----. .-..-. .-. .---. ");
 		System.out.println("	  | 　_　_|		{_   _}| ||  `| || || {}  }| ||  `| |/   __} ");
@@ -44,7 +54,7 @@ public class Menu {
 		while (true) {
 			System.out.println("=======================================");
 			System.out.println("");
-			System.out.println("         ★ 티니핑 대도서관 ★         ");
+			System.out.println("           ★ 티니핑 대도서관 ★         ");
 			System.out.println("");
 			System.out.println("=======================================");
 			System.out.println("");
@@ -61,11 +71,13 @@ public class Menu {
 			if (scanner.hasNextInt()) {
 				main_Menu_Choice = scanner.nextInt();
 				scanner.nextLine(); // 줄바꿈 제거
+				Menu.ConsoleUtil.clearConsole();
 
 				switch (main_Menu_Choice) {
 				case 1:
 					currentUser = loginMenu(conn); // 로그인 메뉴 호출
 					if (currentUser != null) {
+						ConsoleUtil.clearConsole();
 						System.out.println("로그인 성공: " + currentUser.getName() + "님, 환영합니다.");
 						if (currentUser.getMemberGrade().equals("관리자")) {
 							adminMenu(admin, conn); // 관리자 메뉴 호출
@@ -88,7 +100,7 @@ public class Menu {
 					System.out.print("정말로 종료하시겠습니까? (Y/N): ");
 					String exitChoice = scanner.nextLine().trim().toUpperCase();
 					if (exitChoice.equals("Y")) {
-						System.out.println("프로그램을 종료합니다.");
+						System.out.println("\n프로그램이 종료되었습니다.");
 						DBConnection.closeConnection(); // DB 연결 종료
 						System.exit(0);
 					} else if (exitChoice.equals("N")) {
@@ -123,21 +135,19 @@ public class Menu {
 	// 사용자 메뉴
 	public static void userMenu(Member member, Connection conn) throws SQLException {
 	    while (true) {
-	        System.out.println("=======================================");
-	        System.out.println("");
-	        System.out.println("      - 사용자 메뉴를 선택해주세요. -");
-	        System.out.println("");
-	        System.out.println("=======================================");
-	        System.out.println("");
+	        System.out.println("\n=======================================");
+	        System.out.println("\n      - 사용자 메뉴를 선택해주세요. -\n");
+	        System.out.println("=======================================\n");
 	        System.out.println("	    1. 도서 검색");
 	        System.out.println("	    2. 도서 대여");
 	        System.out.println("	    3. 도서 반납");
 	        System.out.println("	    4. 회원 정보 보기");
 	        System.out.println("	    5. 로그아웃");
-	        System.out.println("");
+	        System.out.println("\n=======================================\n");
 	        System.out.print("숫자를 입력해주세요: ");
 
 	        String input = scanner.nextLine(); // 입력을 문자열로 받기
+	        ConsoleUtil.clearConsole();
 
 	        try {
 	            int choice = Integer.parseInt(input); // 입력을 정수로 변환
@@ -172,30 +182,34 @@ public class Menu {
 	public static void adminMenu(Admin admin, Connection conn) throws SQLException {
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
-			System.out.println("=== 관리자 메뉴 ===");
-			System.out.println("1. 전체 회원 관리");
-			System.out.println("2. 도서 목록 관리");
-			System.out.println("3. 대여 연장 요청 승인");
-			System.out.println("4. 로그아웃");
-			System.out.print("선택: ");
+			
+	        System.out.println("\n=======================================");
+	        System.out.println("\n      - 관리자 메뉴를 선택해주세요. -\n");
+	        System.out.println("=======================================\n");
+	        System.out.println("	   1. 전체 회원 관리");
+	        System.out.println("	   2. 도서 목록 관리");
+	        System.out.println("	   3. 로그아웃");
+	        System.out.println("\n=======================================\n");
+	        System.out.print("숫자를 입력해주세요: ");
 
 			if (scanner.hasNextInt()) {
 				int choice = scanner.nextInt();
 				scanner.nextLine(); // 줄바꿈 제거
 				switch (choice) {
 				case 1:
+					ConsoleUtil.clearConsole();
 					admin.manageUsers(conn); // 회원 관리
 					break;
 				case 2:
+					Menu.ConsoleUtil.clearConsole();
 					admin.manageBooks(conn); // 도서 관리
 					break;
 				case 3:
-					admin.approveExtension(conn); // 대여 연장 승인
-					break;
-				case 4:
+					Menu.ConsoleUtil.clearConsole();
 					System.out.println("관리자 로그아웃 완료.");
 					return;
 				default:
+					Menu.ConsoleUtil.clearConsole();
 					System.out.println("잘못된 선택입니다. 다시 입력해주세요.");
 				}
 			} else {

@@ -4,6 +4,8 @@ import java.sql.*; // JDBC API 사용을 위한 패키지
 import java.util.InputMismatchException;
 import java.util.Scanner; // 사용자 입력을 받기 위한 패키지
 
+import dbPackage.Menu.ConsoleUtil;
+
 public class Admin {
 	private Connection conn; // 데이터베이스 연결을 위한 Connection 객체
 
@@ -27,13 +29,17 @@ public class Admin {
 		while (true) {
 			// 회원 관리 메뉴 출력
 
-			System.out.println("=== 회원 관리 ===");
-			System.out.println("1. 전체 회원 목록 보기");
-			System.out.println("2. 회원 등급 수정");
-			System.out.println("3. 뒤로 가기");
-			System.out.print("선택: ");
+	        System.out.println("\n=======================================");
+	        System.out.println("\n      - 회원 관리를 선택해주세요. -\n");
+	        System.out.println("=======================================\n");
+	        System.out.println("	   1. 전체 회원 목록 보기");
+	        System.out.println("	   2. 회원 등급 수정");
+	        System.out.println("	   3. 뒤로 가기");
+	        System.out.println("\n=======================================\n");
+	        System.out.print("숫자를 입력해주세요: ");
 
 			String input = scanner.nextLine(); // 입력을 문자열로 받기
+			ConsoleUtil.clearConsole();
 
 			try {
 				int choice = Integer.parseInt(input);
@@ -71,7 +77,7 @@ public class Admin {
 			ResultSet rs = stmt.executeQuery(query);
 
 			// 회원 목록 출력
-			System.out.println("=== 전체 회원 목록 ===");
+
 			while (rs.next()) {
 				System.out.println("ID: " + rs.getString("memberID") + ", 이름: " + rs.getString("name") + ", 등급: "
 						+ rs.getString("memberGrade"));
@@ -155,13 +161,17 @@ public class Admin {
 		// 도서 관리 기능 선택을 위한 무한 루프
 		while (true) {
 			// 도서 관리 메뉴 출력
-			System.out.println("=== 도서 관리 ===");
-			System.out.println("1. 도서 추가");
-			System.out.println("2. 도서 수정");
-			System.out.println("3. 도서 삭제");
-			System.out.println("4. 도서 목록 보기");
-			System.out.println("5. 뒤로 가기");
-			System.out.print("선택: ");
+			
+	        System.out.println("\n=======================================");
+	        System.out.println("\n      - 도서 관리를 선택해주세요. -\n");
+	        System.out.println("=======================================\n");
+	        System.out.println("	   1. 도서 추가");
+	        System.out.println("	   2. 도서 수정");
+	        System.out.println("	   3. 도서 삭제");
+	        System.out.println("	   4. 도서 목록 보기");
+	        System.out.println("	   5. 뒤로 가기");
+	        System.out.println("\n=======================================\n");
+	        System.out.print("숫자를 입력해주세요: ");
 
 			// 사용자 선택 입력 받기
 			int choice;
@@ -177,34 +187,34 @@ public class Admin {
 			switch (choice) {
 			case 1:
 				// 도서 추가 메서드 호출
+				Menu.ConsoleUtil.clearConsole();
 				addBook(scanner);
 				break;
 			case 2:
 				// 도서 수정 메서드 호출
+				Menu.ConsoleUtil.clearConsole();
 				updateBook(scanner);
 				break;
 			case 3:
 				// 도서 삭제 메서드 호출
+				Menu.ConsoleUtil.clearConsole();
 				deleteBook(scanner);
 				break;
 			case 4:
 				// 도서 목록 보기 메서드 호출
+				Menu.ConsoleUtil.clearConsole();
 				listBooks();
 				break;
 			case 5:
 				// 메뉴 종료, 이전 메뉴로 돌아감
+				Menu.ConsoleUtil.clearConsole();
 				return;
 			default:
 				// 잘못된 선택 시 오류 메시지 출력
+				Menu.ConsoleUtil.clearConsole();
 				System.out.println("잘못된 선택입니다. 다시 입력해주세요.");
 			}
 		}
-	}
-
-	// 대여 연장 요청 승인 메서드
-	public void approveExtension(Connection conn) {
-		// 대여 연장 승인 로직은 아직 구현되지 않았음을 알리는 메시지 출력
-		System.out.println("대여 연장 승인 기능은 아직 구현되지 않았습니다.");
 	}
 
 	// 도서 추가 메서드
@@ -357,9 +367,11 @@ public class Admin {
 
 			// 쿼리 실행하여 결과 집합 가져옴
 			ResultSet rs = stmt.executeQuery(query);
-
+			
 			// 도서 목록 출력
-			System.out.println("=== 도서 목록 ===");
+			System.out.println("=======================================");
+			System.out.println("\n      	     - 도서 목록 -\n");
+			System.out.println("=======================================");
 			while (rs.next()) {
 				// 각 도서의 정보를 출력
 				System.out.println("ID: " + rs.getInt("bookId") + ", 제목: " + rs.getString("bookName") + ", 저자: "
